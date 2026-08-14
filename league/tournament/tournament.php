@@ -20,7 +20,7 @@ class tournament {
 
 			'l_tournament'								=> 'SELECT * FROM `tournament`',
 
-			'i_tournament'								=> 'INSERT INTO `tournament` (`name`, `startDate`, `endDate`, `createTime`) VALUES (?,?,?,?)',
+			'i_tournament'								=> 'INSERT INTO `tournament` (`name`, `startDate`, `endDate`, `status`, `createTime`) VALUES (?,?,?,?,?)',
 
 			'u_tournament'               				=> 'UPDATE `tournament` SET WHERE `tournamentID` = ?',
 
@@ -94,6 +94,7 @@ class tournament {
 		$opt = h::eX($req, [
 			'createTime'	=> '~Y-m-d H:i:s',
 			'endDate'		=> '~Y-m-d/d',
+			'status'		=> '~^(?:scheduled|regular_season|knockout|finished)$',
 			], $error, true);
 
 		// on error
@@ -103,6 +104,7 @@ class tournament {
 		$opt += [
 			'createTime'	=> h::dtstr('now', 'Y-m-d H:i:s'),
 			'endDate'		=> null,
+			'status'		=> 'scheduled',
 			];
 
 		// get tournament by name
@@ -114,7 +116,7 @@ class tournament {
 		if($res->status == 200) return self::response(409);
 
 		// create tournament
-		$tournamentID = self::pdo('i_tournament', [$mand['name'], $mand['startDate'], $opt['endDate'], $opt['createTime']]);
+		$tournamentID = self::pdo('i_tournament', [$mand['name'], $mand['startDate'], $opt['endDate'], $opt['status'], $opt['createTime']]);
 
 		// on error
 		if($tournamentID === false) return self::response(560);
@@ -135,6 +137,7 @@ class tournament {
 			'name'			=> '~1,255/s',
 			'startDate'		=> '~Y-m-d/d',
 			'endDate'		=> '~Y-m-d/d',
+			'status'		=> '~^(?:scheduled|regular_season|knockout|finished)$',
 			], $error, true);
 
 		// on error
