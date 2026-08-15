@@ -545,6 +545,9 @@ class api {
 			// add gameID (from previous created game)
 			$game_player->gameID = $game->gameID;
 
+			// add teamID
+			$game_player->teamID = ($game_player->team == 1) ? $mand['team_oneID'] : $mand['team_twoID'];
+
 			// create game player
 			$res = tournament_game_player::create_game_player($game_player);
 

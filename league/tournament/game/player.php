@@ -21,7 +21,9 @@ class game_player {
 			'l_tournament_game_player_by_gameID'			=> 'SELECT * FROM `tournament_game_player` WHERE `gameID` = ?',
 			'l_tournament_game_player_by_playerID'			=> 'SELECT * FROM `tournament_game_player` WHERE `playerID` = ?',
 
-			'i_tournament_game_player'						=> 'INSERT INTO `tournament_game_player` (`tournamentID`, `gameID`, `playerID`, `team`, `championID`, `champion`, `summoner_one`, `summoner_two`, `level`, `kills`, `deaths`, `assists`, `creep_score`, `gold`, `position`, `won`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', // 16 values
+			'i_tournament_game_player'						=> 'INSERT INTO `tournament_game_player` (`tournamentID`, `gameID`, `teamID`, `playerID`, `team`, `championID`, `champion`, `summoner_one`, `summoner_two`, `level`, `kills`, `deaths`, `assists`, `creep_score`, `gold`, `position`, `won`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', // 16 values
+
+			'u_tournament_game_player'						=> 'UPDATE `tournament_game_player` SET WHERE `game_playerID` = ?',
 
 
 			// Queries: tournament_game_player | tournament_game
@@ -155,6 +157,7 @@ class game_player {
 		$mand = h::eX($req, [
 			'tournamentID'		=> '~1,4294967295/i',
 			'gameID'			=> '~1,4294967295/i',
+			'teamID'			=> '~1,4294967295/i',
 			'playerID'			=> '~1,4294967295/i',
 			'team'				=> '~1,2/i',
 			'championID'		=> '~1,4294967295/i',
@@ -175,7 +178,7 @@ class game_player {
 		if($error) return self::response(400, $error);
 
 		// create entry
-		$game_playerID = self::pdo('i_tournament_game_player', [$mand['tournamentID'], $mand['gameID'], $mand['playerID'], $mand['team'], $mand['championID'], $mand['champion'], $mand['summoner_one'], $mand['summoner_two'], $mand['level'], $mand['kills'], $mand['deaths'], $mand['assists'], $mand['creep_score'], $mand['gold'], $mand['position'], $mand['won'] ? 1 : 0]);
+		$game_playerID = self::pdo('i_tournament_game_player', [$mand['tournamentID'], $mand['gameID'], $mand['teamID'], $mand['playerID'], $mand['team'], $mand['championID'], $mand['champion'], $mand['summoner_one'], $mand['summoner_two'], $mand['level'], $mand['kills'], $mand['deaths'], $mand['assists'], $mand['creep_score'], $mand['gold'], $mand['position'], $mand['won'] ? 1 : 0]);
 
 		// on error
 		if($game_playerID === false) return self::response(560);
@@ -186,6 +189,54 @@ class game_player {
 
 	public static function update_game_player($req = []){
 
+		// mandatory
+		$mand = h::eX($req, [
+			'game_playerID'		=> '~1,4294967295/i',
+			], $error);
+
+		// optional
+		$opt = h::eX($req, [
+			'teamID'			=> '~1,4294967295/i',
+			], $error, true);
+
+		// on error
+		if($error) return self::response(400, $error);
+
+		// get game player by ID
+		$res = self::get_game_player([
+			'game_playerID'	=> $mand['game_playerID'],
+			]);
+
+		// on error
+		if($res->status != 200) return $res;
+
+        // take entry
+        $entry = $res->data;
+
+        // default update
+        $update = [];
+
+        // check for each opt
+        foreach($opt as $k => $v){
+
+            // if value does not match push into update
+            if($entry->{$k} !== $v) $update[$k] = $v;
+            }
+
+        // if there is nothing to update
+        if(!$update) return self::response(204);
+
+        // set query
+        $query = self::pdo_extract('u_tournament_game_player', ['SET' => 'SET `'.implode('` = ?, `', array_keys($update)).'` = ?']);
+
+        // update
+        $upd = self::pdo($query, array_merge(array_values($update), [$mand['game_playerID']]));
+
+        // on error
+        if($upd === false) return self::response(560);
+
+        // return success
+        return self::response(204);
 		}
 
 	}

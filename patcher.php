@@ -14,6 +14,10 @@ use \customstats\league\customgame\customgame;
 use \customstats\league\customgame\game_player;
 use \customstats\league\customgame\game_ban;
 
+use \customstats\league\tournament\game as tournament_game;
+use \customstats\league\tournament\team_player as tournament_team_player;
+use \customstats\league\tournament\game_player as tournament_game_player;
+
 
 class patcher {
 	use \heart\core\libcom_trait,
@@ -236,4 +240,87 @@ class patcher {
 		// return success
 		return self::response(201);
 		}
+
+	public static function patch_tournament_game_player($req = []){
+
+		// define stats
+		$stat = (object)[
+			'found'		=> 0,
+			'processed'	=> 0,
+			'updated'	=> 0,
+			'error'		=> 0,
+			'error_list'=> [],
+			];
+
+		// load all tournament players
+		$res = tournament_game_player::get_game_player();
+
+		// on error
+		if($res->status != 200) return $res;
+
+		// take data
+		$game_player = $res->data;
+
+		// count list
+		$stat->found = count($game_player);
+
+		// load gamelist
+		$res = tournament_game::get_game();
+
+		// on error
+		if($res->status != 200) return $res;
+
+		// take data
+		$game_list = $res->data;
+
+		// updated list
+		$game_list_indexed = [];
+
+		// for each game
+		foreach($game_list as $game){
+
+			// add to list
+			$game_list_indexed[$game->gameID] = (object)[
+				'team_oneID'	=> $game->team_oneID,
+				'team_twoID'	=> $game->team_twoID,
+				];
+			}
+
+		// for each game player
+		foreach($game_player as $entry){
+
+			// increment
+			$stat->processed++;
+
+			// get both teams by gameID
+			$both_teams = $game_list_indexed[$entry->gameID];
+
+			// select team
+			$teamID = ($entry->team == 1) ? $both_teams->team_oneID : $both_teams->team_twoID;
+
+			// update entry
+			$res = tournament_game_player::update_game_player([
+				'game_playerID'	=> $entry->game_playerID,
+				'teamID'		=> $teamID,
+				]);
+
+			// on error
+			if($res->status != 204){
+
+				// increment and add to list
+				$stat->error++;
+				$stat->error_list[$entry->game_playerID] = $res;
+
+				// skip
+				continue;
+				}
+
+			// increment success
+			$stat->updated++;
+			}
+
+		// return stats
+		return self::response(200, $stat);
+		}
+
 	}
