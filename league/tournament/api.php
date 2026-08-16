@@ -259,6 +259,7 @@ class api {
 					'duration'			=> $tournament_game_list[$gameplayer->gameID]->duration,
 					'source_url'		=> $tournament_game_list[$gameplayer->gameID]->source_url_complete,
 					'vod_link'			=> $tournament_game_list[$gameplayer->gameID]->vod_link,
+					'canceled'			=> $tournament_game_list[$gameplayer->gameID]->canceled,
 					'winner_teamID'		=> (($gameplayer->team == 1 and $gameplayer->won) or ($gameplayer->team == 2 and !$gameplayer->won)) ? 1 : 2,
 					'team_one'			=> (object)[
 						'name'			=> $tournament_game_list[$gameplayer->gameID]->team_one[0]->name,
