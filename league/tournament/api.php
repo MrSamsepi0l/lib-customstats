@@ -19,6 +19,7 @@ use \customstats\league\tournament\team_player as tournament_team_player;
 use \customstats\league\tournament\game_player as tournament_game_player;
 use \customstats\league\tournament\player\analyse as player_analyse;
 use \customstats\league\tournament\matchhistory as tournament_match_history;
+use \customstats\league\tournament\metric as tournament_team_metric;
 
 
 class api {
@@ -591,6 +592,38 @@ class api {
 			'tournamentID'	=> $mand['tournamentID'],
 			'playerID'		=> $mand['playerID'],
 			]);
+		}
+
+	public static function get_team_metric($req = []){
+
+		// load all teams
+		$res = tournament_team::get_team([
+			'with_player'	=> true,
+			]);
+
+		// on error
+		if($res->status != 200) return self::response(570, $res);
+
+		// take teams
+		$team_list = $res->data;
+
+		// load metric
+		$res = tournament_team_metric::get_team_metric($req);
+
+		// default
+		$metric = null;
+
+		// on success, take metric
+		if($res->status == 200) $metric = $res->data;
+
+		// define result
+		$result = (object)[
+			'team_list'	=> $team_list,
+			'metric'	=> $metric,
+			];
+
+		// forward request
+		return self::response(200, $result);
 		}
 
 

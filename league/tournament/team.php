@@ -177,7 +177,43 @@ class team {
 			return self::response(200, $list);
 			}
 
-		// param order 5: empty
+		// param order 5: empty + with player
+		if(empty($alt) and !empty($opt['with_player'])){
+
+			// load list
+			$list = self::pdo('l_tournament_team');
+
+			// on error
+			if($list === false) return self::response(560);
+
+			// alter list
+			$alter_list($list);
+
+			// for each entry
+			foreach($list as $entry){
+
+				// load player by teamID
+				$playerlist = self::pdo('l_tournament_team_by_teamID', [$entry->teamID]);
+
+				// on error
+				if(!$playerlist) return self::response($playerlist === false ? 560 : 404);
+
+				// for each player
+				foreach($playerlist as $player){
+
+					// decode tag
+					$player->tag = json_decode($player->tag);
+					}
+
+				// take it
+				$entry->playerlist = $playerlist;
+				}
+
+			// return list
+			return self::response(200, $list);
+			}
+
+		// param order 6: empty
 		if(empty($alt)){
 
 			// load list
