@@ -10,37 +10,37 @@ use \customstats\league\player as league_player;
 
 class customgame {
 	use \heart\core\libcom_trait,
-		\heart\core\pdo_trait;
+		\heart\core\pdo_trait,
+		\customstats\extension\filecache_trait;
 
 	protected static function pdo_config(){
 
 		return [null, [
 
-			's_custom_game'						=> 'SELECT `gameID`, `gameDate`, `duration`, `canceled`, `createTime`
+			's_custom_game'						=> 'SELECT `gameID`, `gameDate`, `duration`, `sourceID`, `canceled`, `createTime`
 													FROM `custom_game`
 													WHERE `gameID` = ?
 													LIMIT 1',
 
-			'l_custom_game'						=> 'SELECT `gameID`, `gameDate`, `duration`, `canceled`, `createTime`
+			'l_custom_game'						=> 'SELECT `gameID`, `gameDate`, `duration`, `sourceID`, `canceled`, `createTime`
 													FROM `custom_game`
 													ORDER BY `gameDate` ASC, `gameID`',
 
-			'l_custom_game_by_date_range'		=> 'SELECT `gameID`, `gameDate`, `duration`, `canceled`, `createTime`
+			'l_custom_game_by_date_range'		=> 'SELECT `gameID`, `gameDate`, `duration`, `sourceID`, `canceled`, `createTime`
 													FROM `custom_game`
 													WHERE `gameDate` BETWEEN ? AND ?
 													ORDER BY `gameDate` ASC, `gameID`',
 
-			'l_custom_game_limited'				=> 'SELECT `gameID`, `gameDate`, `duration`, `canceled`, `createTime`
+			'l_custom_game_limited'				=> 'SELECT `gameID`, `gameDate`, `duration`, `sourceID`, `canceled`, `createTime`
 													FROM `custom_game`
 													ORDER BY `gameDate` DESC, `gameID` DESC
 													LIMIT ?
 													',
 
-			'i_game'							=> 'INSERT INTO `custom_game` (`gameDate`, `duration`, `sourceID`, `canceled`, `createTime`) VALUES (?,?,?,?,?)',
+			'i_custom_game'						=> 'INSERT INTO `custom_game` (`gameDate`, `duration`, `sourceID`, `canceled`, `createTime`) VALUES (?,?,?,?,?)',
 
-			'i_game_player'						=> 'INSERT INTO `custom_game_player` (`gameID`, `playerID`, `teamID`, `championID`, `champion`, `summoner_one`, `summoner_two`, `level`, `kills`, `deaths`, `assists`, `creep_score`, `gold`, `position`, `won`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+			'u_custom_game'						=> 'UPDATE `custom_game` SET WHERE `gameID` = ?',
 
-			'l_game_player'						=> 'SELECT * FROM `custom_game_player` ORDER BY `gameID`',
 			]];
 		}
 
@@ -154,12 +154,72 @@ class customgame {
 			];
 
 		// insert
-		$gameID = self::pdo('i_game', [$mand['gameDate'], $mand['duration'], $opt['sourceID'], $opt['canceled'] ? 1 : 0, $opt['createTime']]);
+		$gameID = self::pdo('i_custom_game', [$mand['gameDate'], $mand['duration'], $opt['sourceID'], $opt['canceled'] ? 1 : 0, $opt['createTime']]);
 
 		// on error
 		if($gameID === false) return self::response(560);
 
 		// on success
 		return self::response(201, (object)['gameID' => $gameID]);
+		}
+
+	public static function update_custom_game($req = []){
+
+		// mandatory
+		$mand = h::eX($req, [
+			'gameID'		=> '~1,4294967295/i',
+			], $error);
+
+		// optional
+		$opt = h::eX($req, [
+			'canceled'		=> '~/b',
+			'gameDate'		=> '~Y-m-d/d',
+			'createTime'	=> '~Y-m-d H:i:s/d',
+			'duration'		=> '~/s',
+			'sourceID'		=> '~0,4294967295/i',
+			], $error, true);
+
+		// on error
+		if($error) return self::response(400, $error);
+
+
+		// search game by ID
+		$res = self::get_custom_game([
+			'gameID'	=> $mand['gameID'],
+			]);
+
+		// on error
+		if($res->status !== 200) return $res;
+
+		// take champion
+		$entry = $res->data;
+
+        // default update
+        $update = [];
+
+        // check for each opt
+        foreach($opt as $k => $v){
+
+            // if value does not match push into update
+            if($entry->{$k} !== $v) $update[$k] = $v;
+            }
+
+        // if there is nothing to update
+        if(!$update) return self::response(204);
+
+        // set query
+        $query = self::pdo_extract('u_custom_game', ['SET' => 'SET `'.implode('` = ?, `', array_keys($update)).'` = ?']);
+
+        // update
+        $upd = self::pdo($query, array_merge(array_values($update), [$mand['gameID']]));
+
+        // on error
+        if($upd === false) return self::response(560);
+
+		// cleanup file cache
+		self::cleanup_cache();
+
+        // return success
+        return self::response(204);
 		}
 	}

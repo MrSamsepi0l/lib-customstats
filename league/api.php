@@ -126,6 +126,12 @@ class api {
 
 
 	/* Object: Game */
+	public static function get_custom_game($req = []){
+
+		// process request
+		return customgame::get_custom_game($req);
+		}
+
 	public static function create_custom_game($req = []){
 
 		// mandatory
@@ -249,6 +255,35 @@ class api {
 		return self::response(201);
 		}
 
+	public static function update_custom_game($req = []){
+
+		// mandatory
+		$mand = h::eX($req, [
+			'gameID'		=> '~1,4294967295/i',
+			], $error);
+
+		// optional
+		$opt = h::eX($req, [
+			'canceled'		=> '~/b',
+			'gameDate'		=> '~Y-m-d/d',
+			'createTime'	=> '~Y-m-d H:i:s/d',
+			'duration'		=> '~/s',
+			'sourceID'		=> '~0,4294967295/i',
+			], $error, true);
+
+		// on error
+		if($error) return self::response(400, $error);
+
+		// forward request and update game
+		$res = customgame::update_custom_game($mand + $opt);
+
+		// on error
+		if($res->status != 204) return self::response(570, $res);
+
+		// return success
+		return self::response(204);
+		}
+
 
 	/* Object: Game_player */
 	public static function get_game_player($req = []){
@@ -266,9 +301,77 @@ class api {
 		return game_player::get_game_player($req);
 		}
 
+	public static function create_game_player($req = []){
+
+		// forward request
+		return game_player::create_game_player($req);
+		}
+
+	public static function update_game_player($req = []){
+
+		// forward request
+		return game_player::update_game_player($req);
+		}
+
+	/* Object: Game_ban */
+	public static function get_game_ban($req = []){
+
+		// mandatory
+		$mand = h::eX($req, [
+			'project'		=> '~^[a-z0-9_]{1,32}$',
+			'api_key'		=> '~1,32/s',
+			], $error);
+
+		// on error
+		if($error) return self::response(400, $error);
+
+		// forward request
+		return game_ban::get_game_ban($req);
+		}
+
+	public static function create_game_ban($req = []){
+
+		// forward request
+		return game_ban::create_game_ban($req);
+		}
+
+	public static function update_game_ban($req = []){
+
+		// forward request
+		return game_ban::update_game_ban($req);
+		}
+
 
 	/* Object: Source */
 	public static function load_source_url($req = []){
+
+		// alternative
+		$alt = h::eX($req, [
+			'sourceID'			=> '~1,4294967295/i',
+			], $error, true);
+
+		// on error
+		if($error) return self::response(400, $error);
+
+		// if single source wanted
+		if(isset($alt['sourceID'])){
+
+			// load urls
+			$res = source::get_source_url($req);
+
+			// on error
+			if($res->status !== 200) return self::response(570, $res);
+
+			// take source
+			$source = $res->data;
+
+			// add url
+			// TODO: change this
+			$source->image_url = '/public/img/customgame/source/' . $source->filename;
+
+			// directly return response
+			return self::response(200, $source);
+			}
 
 		// load urls
 		$res = source::get_source_url($req);
@@ -292,6 +395,7 @@ class api {
 				'filename'		=> $entry->filename,
 				'gameDate'		=> $entry->gameDate,
 				'month_year'	=> h::dtstr($entry->gameDate, 'M-Y'),
+				'image_url'		=> ($entry->filename) ? '/public/img/customgame/source/' . $entry->filename : '',
 				];
 			}
 
