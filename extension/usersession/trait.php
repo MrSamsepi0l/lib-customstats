@@ -58,12 +58,8 @@ trait usersession_trait {
 
 	protected function us_destroy(){
 
-		// destory and unset
-		session_destroy();
+		// unset session
 		session_unset();
-
-		// complete unset
-		$_SESSION = [];
 
 		// return true
 		return true;

@@ -10,6 +10,7 @@ use \heart\core\error as e;
 use \customstats\api\share as api_share;
 use \customstats\base\config as base_config;
 use \customstats\base\user as base_user;
+use \customstats\base\leagueapi as base_leagueapi;
 
 use \customstats\chat;
 use \customstats\chat\user as chat_user;
@@ -357,6 +358,34 @@ class api {
 
 		// return success
 		return self::response(204);
+		}
+
+	public static function get_leagueapi($req = []){
+
+		// forward request
+		$res = base_leagueapi::get_leagueapi($req);
+
+		// on error
+		if($res->status != 200) return self::response(570, $res);
+
+		// take list
+		$list = is_object($res->data) ? [$res->data] : $res->data;
+
+		// for each entry in list
+		foreach($list as $entry){
+
+			// check if function is callable
+			$entry->is_callable = is_callable($entry->fn);
+			}
+
+		// return list
+		return self::response(200, $list);
+		}
+
+	public static function delete_leagueapi($req = []){
+
+		// forward request
+		return base_leagueapi::delete_leagueapi($req);
 		}
 
 	}
