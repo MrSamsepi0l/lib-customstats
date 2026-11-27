@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2023-02-10
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league;
 
 use \heart\core\error as e;
@@ -15,8 +15,9 @@ class customgame {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
+			/* Queries: custom_game */
 			's_custom_game'						=> 'SELECT `gameID`, `gameDate`, `duration`, `sourceID`, `canceled`, `createTime`
 													FROM `custom_game`
 													WHERE `gameID` = ?

@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2026-06-13
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\api;
 
 use \heart\core\helper as h;
@@ -15,9 +15,9 @@ class registration {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
-			// Queries: base_user
+			/* Queries: base_user */
 			'i_api_base_user_registration'			=> 'INSERT INTO `base_user`
 														(`email`, `username`, `username_canonical`, `password`, `real_name`, `enabled`, `online`, `last_activity`, `password_reset`, `api_key`, `data`, `createTime`)
 														VALUES (?,?,?,?,?,?,?,?,?,?,?,?)

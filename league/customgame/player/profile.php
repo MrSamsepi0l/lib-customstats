@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2025-10-24
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league\customgame\player;
 
 use \heart\core\error as e;
@@ -18,8 +18,10 @@ class profile {
 		\customstats\extension\filecache_trait;
 
 	protected static function pdo_config(){
-		return [null, [
 
+		return ['dbs1395906', [
+
+			/* Queries: player */
 			's_customgame_profile_metric'				=> 'SELECT p.playerID, p.ingame_name, p.real_name, p.tag,
 															COUNT(cgp.playerID) AS `times_played`, SUM(cgp.won) AS `times_won`,
 															COUNT(cgp.playerID) - SUM(cgp.won) AS `times_lost`,

@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2022-06-15
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league;
 
 use \heart\core\error as e;
@@ -13,9 +13,9 @@ class replay {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
-			// queries: replay
+			/* Queries: replay */
 			's_replay'									=> 'SELECT * FROM `replay` WHERE `replayID` = ? LIMIT 1',
 			's_replay_by_name'							=> 'SELECT * FROM `replay` WHERE `name` = ? LIMIT 1',
 			's_replay_by_url'							=> 'SELECT * FROM `replay` WHERE `url` = ? LIMIT 1',
@@ -29,7 +29,7 @@ class replay {
 			'd_replay'									=> 'DELETE FROM `replay` WHERE `replayID` = ?',
 
 
-			// queries: replay_player
+			/* Queries: replay_player */
 			's_replay_player'							=> 'SELECT * FROM `replay_player` WHERE `replay_playerID` = ? LIMIT 1',
 			's_replay_player_by_replayID_and_playerID' 	=> 'SELECT * FROM `replay_player` WHERE `replayID` = ? AND `playerID` = ? LIMIT 1',
 

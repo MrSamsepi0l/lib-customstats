@@ -1,13 +1,11 @@
 <?php
-/* Last update: 2021-08-25
-	Jeremiah Meyer - MobileTrendGmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\base;
 
 use \heart\core\error as e;
 use \heart\core\helper as h;
-
-use \customstats\user\user;
 
 class leagueapi {
 	use \heart\core\libcom_trait,
@@ -16,7 +14,7 @@ class leagueapi {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
 			/* queries: leagueapi */
 			's_leagueapi'                    => 'SELECT * FROM `leagueapi` WHERE `name` = ? LIMIT 1',

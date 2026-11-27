@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2022-11-18
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league\tournament;
 
 use \heart\core\error as e;
@@ -11,11 +11,11 @@ class metric {
 	use \heart\core\libcom_trait,
 		\heart\core\pdo_trait;
 
-
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
+			/* Queries: tournament_game_player */
 			's_team_metric'							=> 'SELECT tt.*, tt.name AS `team_name`,
 															tgp.teamID,
 															COUNT(DISTINCT tgp.gameID) AS games_played,
@@ -32,10 +32,6 @@ class metric {
 														GROUP BY tgp.teamID
 														LIMIT 1
 														',
-
-			// 'l_team_metric_by_tournamentID'			=> ['s_team_metric', [
-			// 												'WHERE tgp.team = ?' 	=> 'WHERE tgp.tournamentID = ?',
-			// 												]],
 
 			'l_team_metric_by_tournamentID'			=> 'SELECT tt.*, tt.name AS `team_name`,
 															COUNT(DISTINCT tgp.gameID) AS games_played,
@@ -68,7 +64,6 @@ class metric {
 
 			]];
 		}
-
 
 	public static function get_team_metric($req = []){
 

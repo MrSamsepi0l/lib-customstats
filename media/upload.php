@@ -1,12 +1,11 @@
 <?php
-/* Last update: 2022-05-10
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\media;
 
 use \heart\core\error as e;
 use \heart\core\helper as h;
-use \customstats\user\user;
 use \customstats\league\source;
 
 class upload {
@@ -16,7 +15,7 @@ class upload {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
 
 			]];

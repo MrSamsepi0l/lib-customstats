@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2026-04-23
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league\tournament;
 
 use \heart\core\error as e;
@@ -13,9 +13,10 @@ class matchhistory {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
-			'l_match_history_by_tournament_teamID'	=> '',
+			/* Queries: tournament_game */
+			// 'l_match_history_by_tournament_teamID'	=> '',
 
 			'l_match_history_by_tournamentID'		=> 'SELECT tg.gameID, tg.tournamentID, tg.team_oneID, tg.team_twoID, tg.winner_teamID, tg.type, tg.gameDate, tg.duration, tg.scheduleID, tg.canceled, tg.vod_link, tg.createTime,
 															(SELECT SUM(`kills`) FROM `tournament_game_player` tgp WHERE tgp.gameID = tg.gameID AND tgp.team = 1) AS `kills_team_one`,
@@ -57,6 +58,9 @@ class matchhistory {
 
 		// param order 1: tournamentID & teamID
 		if(isset($alt['tournamentID']) and isset($alt['teamID'])){
+
+			// return not implemented yet
+			return self::response(501);
 
 			// load list
 			$list = self::pdo('l_match_history_by_tournament_teamID', [$alt['tournamentID'], $alt['teamID']]);

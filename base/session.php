@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2021-08-25
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\base;
 
 use \heart\core\error as e;
@@ -13,7 +13,7 @@ class session {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
 			/* Queries: base_session */
 			's_session'								=> 'SELECT * FROM `base_session` WHERE `sessionID` = ? LIMIT 1',

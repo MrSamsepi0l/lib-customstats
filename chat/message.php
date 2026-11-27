@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2022-05-10
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\chat;
 
 use \heart\core\error as e;
@@ -17,7 +17,9 @@ class message {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
+
+			// Queries: chat_message
 			's_chat_message'							=> 'SELECT * FROM `chat_message` WHERE `chat_messageID` = ? LIMIT 1',
 			's_chat_message_latest_by_userID'			=> 'SELECT * FROM `chat_message` WHERE `from_userID` = ? ORDER BY `chat_messageID` DESC LIMIT 1',
 

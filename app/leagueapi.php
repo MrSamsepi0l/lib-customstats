@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2025-02-01
-    Jeremiah Meyer - mobile TREND GmbH
-    */
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\app;
 
 use \heart\core\error as e;

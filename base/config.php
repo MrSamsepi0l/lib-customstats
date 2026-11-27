@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2022-09-10
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\base;
 
 use \heart\core\error as e;
@@ -13,8 +13,9 @@ class config {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
+			/* Queries: base_config */
 			's_base_config'									=> 'SELECT * FROM `base_config` WHERE `configID` = ? LIMIT 1',
 			's_base_config_by_project'						=> 'SELECT * FROM `base_config` WHERE `project` = ? LIMIT 1',
 

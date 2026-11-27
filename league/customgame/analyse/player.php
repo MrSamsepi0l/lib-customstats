@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2023-01-13
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league\customgame\analyse;
 
 use \heart\core\error as e;
@@ -19,8 +19,9 @@ class player {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
+			/* Queries: custom_game_player */
 			'l_profile_customgame_player_with_data'		=> 'SELECT p.playerID, p.ingame_name,
 															COUNT(cgp.playerID) AS `times_played`
 															FROM `custom_game_player` cgp

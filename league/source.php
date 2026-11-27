@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2022-04-17
-	Jeremiah Meyer - MobileTrendGmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league;
 
 use \heart\core\error as e;
@@ -13,7 +13,7 @@ class source {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
 			// Queries: source_image
 			's_source_image'				=> 'SELECT * FROM `source_image` WHERE `sourceID` = ? LIMIT 1',

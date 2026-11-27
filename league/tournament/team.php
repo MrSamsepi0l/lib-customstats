@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2022-09-10
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league\tournament;
 
 use \heart\core\error as e;
@@ -13,8 +13,9 @@ class team {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
+			/* Queries: tournament_team */
 			's_tournament_team'						=> 'SELECT * FROM `tournament_team` WHERE `teamID` = ? LIMIT 1',
 			's_tournament_team_by_name'				=> 'SELECT * FROM `tournament_team` WHERE `name` = ? LIMIT 1',
 
@@ -37,6 +38,7 @@ class team {
 			'i_tournament_team'						=> 'INSERT INTO `tournament_team` (`tournamentID`, `name`, `createTime`) VALUES (?,?,?)',
 
 			'u_tournament_team'						=> 'UPDATE `tournament_team` SET WHERE `teamID` = ?',
+
 			]];
 		}
 

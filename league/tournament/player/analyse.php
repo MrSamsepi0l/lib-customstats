@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2023-01-13
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league\tournament\player;
 
 use \heart\core\error as e;
@@ -15,8 +15,9 @@ class analyse {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
+			/* Queries: tournament_player */
 			's_tournament_player_analyse'				=> 'SELECT tp.playerID, tp.ingame_name, tp.real_name,
 															COUNT(tgp.playerID) AS `times_played`, SUM(tgp.won) AS `times_won`,
 															COUNT(tgp.playerID) - SUM(tgp.won) AS `times_lost`,

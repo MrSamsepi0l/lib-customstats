@@ -1,12 +1,11 @@
 <?php
-/* Last update: 2024-10-31
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league\customgame;
 
 use \heart\core\error as e;
 use \heart\core\helper as h;
-
 
 class dashboard {
 	use \heart\core\libcom_trait,
@@ -14,15 +13,15 @@ class dashboard {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
-			/* basic stats of all customgames */
-			's_dashboard_game_information'			=> 'SELECT COUNT(DISTINCT(`gameID`)) AS `total_games`, (SELECT MAX(`duration`) FROM `custom_game`) AS `highest_duration`,
-															(SELECT AVG(`duration`) FROM `custom_game`) AS `average_duration`,
-															(SELECT MAX(`gameDate`) FROM `custom_game`) AS `last_gameDate`
-															FROM `custom_game_player`
-															LIMIT 1
-															',
+			/* Queries custom_game_player */
+			's_dashboard_game_information'		=> 'SELECT COUNT(DISTINCT(`gameID`)) AS `total_games`, (SELECT MAX(`duration`) FROM `custom_game`) AS `highest_duration`,
+													(SELECT AVG(`duration`) FROM `custom_game`) AS `average_duration`,
+													(SELECT MAX(`gameDate`) FROM `custom_game`) AS `last_gameDate`
+													FROM `custom_game_player`
+													LIMIT 1
+													',
 			]];
 		}
 

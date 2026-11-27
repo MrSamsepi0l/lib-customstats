@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2022-09-10
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league\tournament;
 
 use \heart\core\error as e;
@@ -13,15 +13,19 @@ class game {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
+			/* Queries: tournament_game */
 			's_tournament_game'								=> 'SELECT * FROM `tournament_game` WHERE `gameID` = ? LIMIT 1',
 
 			'l_tournament_game_by_tournamentID'				=> 'SELECT * FROM `tournament_game` WHERE `tournamentID` = ?',
+			'l_tournament_game_by_tournamentID_limited'		=> 'SELECT * FROM `tournament_game` WHERE `tournamentID` = ? ORDER BY `gameDate` DESC, `gameID` DESC LIMIT ?',
 			'l_tournament_game_by_teamID'					=> 'SELECT * FROM `tournament_game` WHERE `team_oneID` = ? OR `team_twoID` = ?',
 			'l_tournament_game'								=> 'SELECT * FROM `tournament_game`',
+			'l_tournament_game_limited'						=> 'SELECT * FROM `tournament_game` ORDER BY `gameDate` DESC, `gameID` DESC LIMIT ?',
 
 			'i_tournament_game'								=> 'INSERT INTO `tournament_game` (`tournamentID`, `team_oneID`, `team_twoID`, `winner_teamID`, `type`, `gameDate`, `duration`, `scheduleID`, `canceled`, `vod_link`, `createTime`) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+
 			]];
 		}
 
@@ -33,6 +37,7 @@ class game {
 			'gameID'		=> '~1,4294967295/i',
 			'tournamentID'	=> '~1,4294967295/i',
 			'teamID'		=> '~1,4294967295/i',
+			'limit'			=> '~1,100000/i',
 			], $error, true);
 
 		// on error
@@ -66,7 +71,23 @@ class game {
 			return self::response(200, $entry);
 			}
 
-		// param order 2: tournamentID
+		// param order 2: tournamentID + limit
+		if(isset($alt['tournamentID'], $alt['limit'])){
+
+			// load list
+			$list = self::pdo('l_tournament_game_by_tournamentID_limited', [$alt['tournamentID'], $alt['limit']]);
+
+			// on error
+			if($list === false) return self::response(560);
+
+			// convert
+			$convert($list);
+
+			// return list
+			return self::response(200, $list);
+			}
+
+		// param order 3: tournamentID
 		if(isset($alt['tournamentID'])){
 
 			// load list
@@ -82,7 +103,7 @@ class game {
 			return self::response(200, $list);
 			}
 
-		// param order 3: teamID
+		// param order 4: teamID
 		if(isset($alt['teamID'])){
 
 			// load list
@@ -98,7 +119,20 @@ class game {
 			return self::response(200, $list);
 			}
 
-		// param order 4: empty
+		// param order 5: limit
+		if(isset($alt['limit'])){
+
+			// load list from DB
+			$list = self::pdo('l_tournament_game_limited', [$alt['limit']]);
+
+			// on error
+			if($list === false) return self::response(560);
+
+			// on success
+			return self::response(200, $list);
+			}
+
+		// param order 6: empty
 		if(empty($alt)){
 
 			// load list
@@ -115,7 +149,7 @@ class game {
 			}
 
 		// on error
-		return self::response(400, 'Expecting gameID|tournamentID|teamID or no parameter');
+		return self::response(400, 'Expecting gameID|tournamentID|tournamentID+limit|teamID|limit or no parameter');
 		}
 
 	public static function create_game($req = []){

@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2023-08-04
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league;
 
 use \heart\core\error as e;
@@ -14,7 +14,9 @@ class player {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
+
+			/* Queries: player */
 			's_player'					=> 'SELECT * FROM `player` WHERE `playerID` = ? LIMIT 1',
 			's_player_by_ingame_name'	=> 'SELECT * FROM `player` WHERE `ingame_name` = ? LIMIT 1',
 			'l_player'					=> 'SELECT * FROM `player`',
@@ -22,6 +24,7 @@ class player {
 			'i_player'					=> 'INSERT INTO `player` (`ingame_name`, `real_name`, `enabled`, `createTime`, `tag`) VALUES (?,?,?,?,?)',
 			'u_player'               	=> 'UPDATE `player` SET WHERE `playerID` = ?',
 			]];
+
 		}
 
 	static $lvl1_cache = [];

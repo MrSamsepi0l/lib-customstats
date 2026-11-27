@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2023-01-13
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league\customgame;
 
 use \heart\core\error as e;
@@ -12,14 +12,13 @@ use \customstats\league\customgame\player as game_player;
 use \customstats\league\player as league_player;
 use \customstats\league\customgame\analyse\player as analyse_player;
 
-
 class bestof {
 	use \heart\core\libcom_trait,
 		\heart\core\pdo_trait;
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
 			/* basic stats of all customgames */
 			's_bestof_basic_metric'						=> 'SELECT COUNT(DISTINCT(`gameID`)) AS `total_games`, (SELECT MAX(`duration`) FROM `custom_game`) AS `highest_duration`,
@@ -567,7 +566,6 @@ class bestof {
 		return self::response(200, $result);
 		}
 
-
 	public static function get_most_banned_champ($req = []){
 
 		// optional
@@ -1072,7 +1070,6 @@ class bestof {
 		return self::response(200, $result);
 		}
 
-
 	public static function get_highest_winstreak_player($req = []){
 
 		// optional
@@ -1211,89 +1208,4 @@ class bestof {
 		return self::response(200, $result);
 		}
 
-	public static function optimized_get_duo($req = []){
-
-		// optional
-		$opt = h::eX($req, [
-			'limit'			=> '~1,1000/i',
-			'min_games'		=> '~1,1000/i',
-			], $error, true);
-
-		// on error
-		if($error) return self::response(400, $error);
-
-		// default opt
-		$opt += [
-			'limit'			=> 7,
-			'min_games'		=> 10,
-			];
-
-		// load playerlist
-		$res = league_player::get_player();
-
-		// on error
-		if($res->status != 200) return $res;
-
-		// take games
-		$playerlist = $res->data;
-
-
-		// load all player games
-		$res = game_player::get_game_player();
-
-		// on error
-		if($res->status != 200) return $res;
-
-		// take game player list
-		$game_player_list = $res->data;
-
-		// default list
-		$list_converted = [];
-
-		// // build new list
-		// foreach($game_player_list as $entry){
-
-		// 	// playerID => gameID
-		// 	$list_converted[]
-
-		// 	// if not set, do it here
-		// 	if(!isset($list_converted[$entry->gameID])) $list_converted[$entry->gameID] = [];
-
-		// 	// add game to list
-		// 	}
-
-
-		// default result
-		$result = [];
-
-		// for each player
-		foreach($playerlist as $player){
-
-			// create map
-			$player_map = [
-				// e.g. 4 => (object)[$player->playerID =>]
-				];
-
-			// look through every game
-			foreach($game_player_list as $game_player){
-
-				// skip if player was not in game
-				if($player->playerID != $game_player->playerID) continue;
-				}
-			}
-
-		/*
-
-			-> lade Spielerliste
-
-			-> lade für jeden Spieler seine Spiele
-
-			-> lege eine Hashmap für jeden Spieler an: playerID (4) => (object)['player_oneID' => 4, 'player_twoID' => 7, 'times_played' => 0, 'times_won' => 0, 'times_lost']
-
-			-> sortiere liste nach jeweiligem input
-			-> filtere doppelte heraus
-			*/
-
-		//
-		}
 	}

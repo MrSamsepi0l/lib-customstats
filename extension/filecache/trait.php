@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2024-06-28
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\extension;
 
 use \heart\core\helper as h;

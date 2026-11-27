@@ -1,12 +1,11 @@
 <?php
-/* Last update: 2023-01-13
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league\customgame\analyse;
 
 use \heart\core\error as e;
 use \heart\core\helper as h;
-
 
 class champion {
 	use \heart\core\libcom_trait,
@@ -14,7 +13,7 @@ class champion {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
 			/* Queries: champions / custom_game_player / custom_game_ban */
 			's_customgame_champion_analyse'				=> 'SELECT c.championID, c.name, c.gender, COUNT(cgp.championID) AS `times_played`,
@@ -39,6 +38,7 @@ class champion {
 															LEFT JOIN `custom_game_player` cgp ON cgp.championID = c.championID
 															GROUP BY c.championID
 															',
+
 			]];
 
 		}

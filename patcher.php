@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2023-01-13
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats;
 
 use \heart\core\error as e;
@@ -25,10 +25,10 @@ class patcher {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
-			/* Queries: import_base_user */
-			'import_base_user'						=> 'INSERT INTO `base_user` (`userID`,`email`,`username`,`username_canonical`,`password`,`real_name`,`enabled`,`online`,`last_activity`,`password_reset`,`donation`,`api_key`,`playerID`,`createTime`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+			/* Queries: base_user */
+			'import_base_user'					=> 'INSERT INTO `base_user` (`userID`,`email`,`username`,`username_canonical`,`password`,`real_name`,`enabled`,`online`,`last_activity`,`password_reset`,`donation`,`api_key`,`playerID`,`createTime`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 			]];
 		}
 

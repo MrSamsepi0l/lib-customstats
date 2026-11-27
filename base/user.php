@@ -1,7 +1,7 @@
 <?php
-/* Version 1.0.2023-02-03
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\base;
 
 use \heart\core\error as e;
@@ -16,9 +16,9 @@ class user {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
-			/* Queries base:user */
+			/* Queries: base_user */
 			's_user'								=> 'SELECT * FROM `base_user` WHERE `userID` = ? LIMIT 1',
 			's_user_by_username'					=> 'SELECT * FROM `base_user` WHERE `username` = ? LIMIT 1',
 			's_user_by_email'						=> 'SELECT * FROM `base_user` WHERE `email` = ? LIMIT 1',

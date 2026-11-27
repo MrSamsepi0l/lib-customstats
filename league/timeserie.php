@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2021-11-06
-	Jeremiah Meyer - MobileTrendGmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league;
 
 use \heart\core\error as e;
@@ -15,14 +15,16 @@ class timeserie {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
+			/* Queries: custom_game */
 			'l_timeserie_bestof_analysis_by_period'			=> 'SELECT `gameDate`
 																FROM `custom_game`
 																WHERE `gameDate` BETWEEN ? AND ?
 																	AND `canceled` = 0
 																ORDER BY `gameID` ASC',
 
+			/* Queries: custom_game_player */
 			's_timeserie_dashboard_avg_kills'				=> 'SELECT AVG(`kills`) AS `sum`
 																FROM `custom_game_player`
 																WHERE `gameID` = ?
@@ -41,16 +43,17 @@ class timeserie {
 																LIMIT 1
 																',
 
-			'l_timeserie_dashboard_champ_banned'			=> 'SELECT `champion`, COUNT(`championID`) AS `sum`, (COUNT(`championID`) * 100 / ?)
-																FROM `custom_game_ban`
+			'l_timeserie_dashboard_champ_played'			=> 'SELECT `champion`, COUNT(`championID`) AS `sum`, (COUNT(`championID`) * 100 / ?)
+																FROM `custom_game_player`
 																WHERE `gameID` IN ?
 																GROUP BY `championID`
 																ORDER BY `sum` DESC
 																LIMIT 5
 																',
 
-			'l_timeserie_dashboard_champ_played'			=> 'SELECT `champion`, COUNT(`championID`) AS `sum`, (COUNT(`championID`) * 100 / ?)
-																FROM `custom_game_player`
+			/* Queries: custom_game_ban */
+			'l_timeserie_dashboard_champ_banned'			=> 'SELECT `champion`, COUNT(`championID`) AS `sum`, (COUNT(`championID`) * 100 / ?)
+																FROM `custom_game_ban`
 																WHERE `gameID` IN ?
 																GROUP BY `championID`
 																ORDER BY `sum` DESC

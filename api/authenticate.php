@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2026-06-13
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\api;
 
 use \heart\core\helper as h;
@@ -16,9 +16,9 @@ class authenticate {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
-			// Queries: base_user
+			/* Queries: base_user */
 			's_api_base_user_authenticate'			=> 'SELECT `userID`, `email`, `username`, `password`, `real_name`, `enabled`, `online`, `last_activity`, `password_reset`, `api_key`, `createTime`
 														FROM `base_user`
 														WHERE `email` = ? OR `username` = ? OR `username_canonical` = ?

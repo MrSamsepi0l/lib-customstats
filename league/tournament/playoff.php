@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2022-11-18
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league\tournament;
 
 use \heart\core\error as e;
@@ -11,11 +11,11 @@ class playoff {
 	use \heart\core\libcom_trait,
 		\heart\core\pdo_trait;
 
-
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
+			/* Queries: tournament_playoff */
 			's_playoff'								=> 'SELECT * FROM `tournament_playoff` WHERE `playoffID` = ? LIMIT 1',
 
 			'l_playoff'								=> 'SELECT * FROM `tournament_playoff`',

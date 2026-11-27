@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2022-09-10
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league\tournament;
 
 use \heart\core\error as e;
@@ -13,8 +13,9 @@ class schedule {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
+			/* Queries: tournament_schedule */
 			's_tournament_schedule'						=> 'SELECT * FROM `tournament_schedule` WHERE `scheduleID` = ? LIMIT 1',
 
 			'l_tournament_schedule'						=> 'SELECT * FROM `tournament_schedule`',
@@ -45,6 +46,7 @@ class schedule {
 			'i_tournament_schedule'						=> 'INSERT INTO `tournament_schedule` (`tournamentID`, `team_oneID`, `team_twoID`, `type`, `stream_link`, `estimatedDate_from`, `estimatedDate_to`) VALUES (?,?,?,?,?,?,?)',
 
 			'u_tournament_schedule'						=> 'UPDATE `tournament_schedule` SET WHERE `scheduleID` = ?',
+
 			]];
 		}
 

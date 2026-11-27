@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2023-01-13
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league\tournament;
 
 use \heart\core\error as e;
@@ -20,6 +20,7 @@ use \customstats\league\tournament\game_player as tournament_game_player;
 use \customstats\league\tournament\player\analyse as player_analyse;
 use \customstats\league\tournament\matchhistory as tournament_match_history;
 use \customstats\league\tournament\metric as tournament_team_metric;
+use \customstats\league\tournament\timeserie as tournament_timeserie;
 
 
 class api {
@@ -624,6 +625,12 @@ class api {
 
 		// forward request
 		return self::response(200, $result);
+		}
+
+	public static function get_timeserie($req = []){
+
+		// forward request
+		return tournament_timeserie::get_timeserie($req);
 		}
 
 

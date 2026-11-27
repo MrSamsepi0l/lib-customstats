@@ -1,7 +1,7 @@
 <?php
-/* Last update: 2023-10-31
-	Jeremiah Meyer - mobile TREND GmbH
-	*/
+/* Last update: 2026-11-27
+***** Jeremiah Meyer *****
+*****/
 namespace customstats\league\tournament;
 
 use \heart\core\error as e;
@@ -13,7 +13,7 @@ class team_player {
 
 	protected static function pdo_config(){
 
-		return [null, [
+		return ['dbs1395906', [
 
 			// Queries: tournament_team_player
 			'l_tournament_team_player'										=> 'SELECT * FROM `tournament_team_player`',
